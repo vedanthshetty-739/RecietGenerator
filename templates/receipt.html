@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Kshipra Mobiles Receipt</title>
+    <style>
+        @font-face {
+            font-family: 'KannadaFont';
+            src: url('file:///mnt/d/RecietGenerator/fonts/kannada.ttf') format('truetype');
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 10px;
+        }
+
+        .receipt {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            border: 2px solid red;
+            padding: 10px;
+            position: relative;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 10px;
+            position: relative;
+        }
+
+        .logo {
+            position: absolute;
+            left: 10px;
+            max-width: 80px;
+            top: 10px;
+            margin-top: 10px;
+        }
+
+        .header-logo-right {
+            position: absolute;
+            right: 10px;
+            max-width: 80px;
+            top: 10px;
+            margin-top: 10px;
+        }
+
+        .header h1,
+        .header h2,
+        .header h3 {
+            margin: 5px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            border: 1px solid red;
+            padding: 5px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .invoice-details {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .payment-options {
+            display: flex;
+            justify-content: flex-start;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        .payment-option {
+            display: flex;
+            align-items: center;
+            margin-right: 20px;
+        }
+
+        .payment-checkbox {
+            width: 20px;
+            height: 20px;
+            border: 1px solid red;
+            margin-right: 5px;
+            display: inline-block;
+        }
+
+        .terms {
+            font-family: 'KannadaFont', sans-serif;
+            font-size: 0.5em;
+            margin-top: 10px;
+            width: 60%;
+            display: inline-block;
+        }
+
+        .signature {
+            text-align: left; /* Changed to left alignment */
+            margin-top: 20px;
+            position: relative;
+            width: 38%;
+            display: inline-block;
+            vertical-align: top;
+            border: 2px solid red; /* Matched border size */
+            padding: 5px; /* Added padding for better appearance */
+        }
+
+        .signature p {
+            display: block; /* Changed to block for proper alignment */
+            margin-bottom: 5px;
+        }
+
+        .signature::after {
+            content: '';
+            position: absolute;
+            width: 200px;
+            height: 1px;
+            background-color: black;
+            bottom: 0;
+            right: 0;
+        }
+
+        /* Updated Header Styles */
+        .header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .header h2,
+        .header p {
+            margin: 2px 0;
+        }
+
+        .header p:nth-child(2) {
+            font-size: 0.8em;
+        }
+
+        .header p:nth-child(4) {
+            font-size: 0.8em;
+        }
+
+        .header p:nth-child(5) {
+            font-size: 0.8em;
+        }
+
+        .header p:nth-child(6) {
+            font-size: 0.8em;
+        }
+
+        .header p:nth-child(7) {
+            font-size: 0.8em;
+        }
+
+        /* Updated Invoice Details Styles */
+        .invoice-details {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .invoice-details div {
+            font-size: 0.9em;
+        }
+
+        /* Logo Size Adjustment */
+        .logo, .header-logo-right {
+            max-width: 60px; /* Adjusted logo size */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="receipt">
+        <div class="header">
+            <img src="file:///mnt/d/RecietGenerator/static/logos/Kshipra_proper_logo.png" alt="Kshipra Logo" class="logo">
+            <img src="file:///mnt/d/RecietGenerator/static/logos/ganesha_right.jpg" alt="Kshipra Right Logo" class="header-logo-right">
+
+            <div style="display: flex; justify-content: space-between; width: 100%;">
+                <p style="font-size: x-small;">GSTIN: 29BDCPJ9687C1Z6</p>
+                <p style="font-size: x-small;"><b><u>TAX INVOICE</u></b></p>
+                <p style="font-size: x-small;">Mob: 8748835725</p>
+            </div>
+
+            <h2 style="font-family: 'KannadaFont', sans-serif;">ಕ್ಷಿಪ್ರ ಮೊಬೈಲ್ಸ್</h2>
+            <p style="font-family: 'KannadaFont', sans-serif;">ಎಂಟರ್‌ಪ್ರೆಸಸ್</p>
+            <h2>KSHIPRA MOBILES</h2>
+            <p>ENTERPRISES</p>
+            <p>K.H.Road, Ballupet - 573 214, Sakaleshpur Tq, Hassan Dist.</p>
+        </div>
+
+        <div class="invoice-details">
+            <div>
+                <strong>No:</strong> 213
+            </div>
+            <div>
+                <strong>Date: {{ date | default('N/A') }}</strong>
+            </div>
+        </div>
+        <div style="text-align: left; margin-bottom: 10px;">
+            <strong>M/s: {{ customer_name | default('N/A') }}</strong>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>S.No.</th>
+                    <th>Particulars</th>
+                    <th>Qty</th>
+                    <th>Rate</th>
+                    <th>Amount(₹)</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in items %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ item.item_name | default('N/A') }}
+                        {% if item.imei1 %}<br>IMEI 1: {{ item.imei1 }}{% endif %}
+                        {% if item.imei2 %}<br>IMEI 2: {{ item.imei2 }}{% endif %}
+                    </td>
+                    <td>{{ item.quantity | default(0) }}</td>
+                    <td>{{ item.rate | default(0) }}</td>
+                    <td>{{ item.base_amount | default(0) }}</td>
+                </tr>
+                {% endfor %}
+                <tr>
+                    <td colspan="4" align="right">CGST: {{ cgst_percent }}%</td>
+                    <td>{{ cgst | default(0) }}</td>
+                </tr>
+                <tr>
+                    <td colspan="4" align="right">SGST: {{ sgst_percent }}%</td>
+                    <td>{{ sgst | default(0) }}</td>
+                </tr>
+                <tr>
+                    <td colspan="4" align="right">TOTAL:</td>
+                    <td>{{ total_amount | default(0) }}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="payment-options">
+            <div class="payment-option">
+                <div class="payment-checkbox" style="{% if cash %}background-color: #000;{% endif %}"></div>
+                <span>Cash</span>
+            </div>
+            <div class="payment-option">
+                <div class="payment-checkbox" style="{% if loan %}background-color: #000;{% endif %}"></div>
+                <span>Loan</span>
+            </div>
+        </div>
+
+        <div style="display: flex;">
+            <div class="terms">
+                <p>ನಿಬಂಧನೆಗಳು:</p>
+                <p>೧. ಮೊಬೈಲ್ ವಾರೆಂಟಿ ಕಂಪನಿಯಿಂದ ಮಾತ್ರ ಇರುತ್ತದೆ.</p>
+                <p>೨. ಬ್ಯಾಟರಿ ೩ ತಿಂಗಳು ಗ್ಯಾರೆಂಟಿ ಮತ್ತು ಚಾರ್ಜರ್ ೬ ತಿಂಗಳು ಗ್ಯಾರೆಂಟಿ ಇರುತ್ತದೆ.</p>
+                <p>೩. ಒಂದು ವೇಳೆ ಮೊಬೈಲ್ ಕೆಟ್ಟು ಹೋದಲ್ಲಿ ಸರ್ವಿಸ್ ಸೆಂಟ‌ರ್ ನಲ್ಲಿ ರಿಪೇರಿ ಮಾಡಿಕೊಳ್ಳತಕ್ಕದ್ದು.</p>
+                <p>೪. ನಮ್ಮ ಅಂಗಡಿಯಲ್ಲಿ ರಿಪೇರಿ ಮಾಡಿಸಲು ಕೊಟ್ಟಿದ್ದರೆ, ಕನಿಷ್ಠ ೩೦ ದಿನಗಳು ಕಾಲಾವಕಾರ ಕಡ್ಡಾಯವಾಗಿ ಬೇಕಾಗುತ್ತದೆ.</p>
+                <p>೫. ಒಮ್ಮೆ ಮಾರಾಟವಾದ ವಸ್ತುಗಳನ್ನು ಬದಲಾಯಿಸುವುದಿಲ್ಲ ಅಥವಾ ವಾಪಸ್ಸು ತೆಗೆದುಕೊಳ್ಳುವುದಿಲ್ಲ.</p>
+                <p>೬. ನೀರಿನಲ್ಲಿ ಹಾಕಿದ್ದು ಮತ್ತು ಕೆಳಗೆ ಬಿದ್ದಿದ್ದಕ್ಕೆ ಅಂಗಡಿ ಮಾಲೀಕರು ಮತ್ತು ಕಂಪನಿಯ ಗ್ಯಾರಂಟಿ ಇರುವುದಿಲ್ಲ.</p>
+            </div>
+            <div class="signature">
+                <p>Signature</p>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
