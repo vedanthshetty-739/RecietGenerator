@@ -44,6 +44,9 @@ class ReceiptData(BaseModel):
 
 @app.get("/", response_class=HTMLResponse)
 async def read_root(request: Request):
+    '''
+    It all starts here
+    '''
     return templates.TemplateResponse("index.html", {"request": request})
 
 
