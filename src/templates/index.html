@@ -270,11 +270,11 @@
                     window.URL.revokeObjectURL(url);
                     a.remove();
                 } else {
-                    alert('Error generating PDF');
+                    alert(`Error generating PDF: ${error}`);
                 }
             } catch (error) {
                 console.error('Error:', error);
-                alert('Error generating PDF');
+                alert(`Error generating PDF: ${error}`);
             }
         }
 

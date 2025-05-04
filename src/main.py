@@ -7,26 +7,30 @@ from pydantic import BaseModel
 from typing import List, Optional
 from jinja2 import Environment, FileSystemLoader
 from reciet_counter import get_next_receipt_number
-from weasyprint import HTML
 from datetime import datetime
 import logging
+import os
+import base64
+import pdfkit
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
-# added logger
 logger = logging.getLogger(__name__)
+
+# Print working directory for debugging
+current_dir = os.getcwd()
 
 app = FastAPI(debug=True)
 
 # Mount static files directory
-app.mount("/static", StaticFiles(directory="/mnt/d/RecietGenerator/static"), name="static")
+app.mount("/static", StaticFiles(directory="./static"), name="static")
 
 # Initialize templates
 templates = Jinja2Templates(directory="templates")
 
 class FinanceCompany(str, Enum):
     TVS_CREDIT = "TVS CREDIT"
-    BAJAJ_FINANCE = "BAJAJ INANCE"
+    BAJAJ_FINANCE = "BAJAJ FINANCE"
 
 class PaymentType(str, Enum):
     CASH = "cash"
@@ -51,8 +55,21 @@ class ReceiptData(BaseModel):
     payment_type: PaymentType
     down_payment: Optional[int] = 0
     finance_company: Optional[FinanceCompany] = None
-
     total_amount: float
+
+# Helper function to convert images to data URIs
+def get_image_data_uri(image_path, mime_type):
+    if not os.path.exists(image_path):
+        logger.warning(f"Image not found: {image_path}")
+        return ""
+    try:
+        with open(image_path, 'rb') as img_file:
+            encoded_image = base64.b64encode(img_file.read()).decode('utf-8')
+        return f"data:{mime_type};base64,{encoded_image}"
+    except Exception as e:
+        logger.error(f"Error reading image {image_path}: {str(e)}")
+        return ""
+
 
 @app.get("/", response_class=HTMLResponse)
 async def read_root(request: Request):
@@ -60,7 +77,6 @@ async def read_root(request: Request):
 
 @app.post("/generate-receipt-pdf/")
 async def create_receipt_pdf(request: Request, receipt_data: ReceiptData):
-    # Calculate tax amounts
     total_amount = receipt_data.total_amount
     cgst_rate = receipt_data.cgst / 100
     sgst_rate = receipt_data.sgst / 100
@@ -69,7 +85,6 @@ async def create_receipt_pdf(request: Request, receipt_data: ReceiptData):
     cgst_amount = total_amount * cgst_rate
     sgst_amount = total_amount * sgst_rate
 
-    # Prepare item details with base amount
     items_details = []
     for item in receipt_data.items:
         item_base_amount = item.amount / (1 + total_tax_rate)
@@ -83,7 +98,6 @@ async def create_receipt_pdf(request: Request, receipt_data: ReceiptData):
             "base_amount": f"{item_base_amount:.2f}",
         })
 
-    # Prepare template context
     receipt_no = get_next_receipt_number()
     receipt_context = {
         "request": request,
@@ -100,18 +114,35 @@ async def create_receipt_pdf(request: Request, receipt_data: ReceiptData):
         "sgst": f"{sgst_amount:.2f}",
         "total_amount": f"{total_amount:.2f}",
         "down_payment": receipt_data.down_payment,
-        "finance_company": receipt_data.finance_company.value if receipt_data.finance_company else None
+        "Kannada_company_name": "ಕ್ಷಿಪ್ರ ಮೊಬೈಲ್ಸ್",
+        "finance_company": receipt_data.finance_company.value if receipt_data.finance_company else None,
+        "kshipra_logo_uri": get_image_data_uri(f"{current_dir}/static/logos/kshipra_proper_logo.png", "image/png"),
+        "ganesha_logo_uri": get_image_data_uri(f"{current_dir}/static/logos/ganesha_right.jpg", "image/jpeg"),
     }
 
+    # Render template
     template_loader = FileSystemLoader(searchpath="./templates/")
     template_env = Environment(loader=template_loader)
     template = template_env.get_template("receipt.html")
     output_text = template.render(**receipt_context)
-    pdf_bytes = HTML(string=output_text).write_pdf() # Get PDF as bytes
 
-    # Return PDF data as a streaming response
+    # Generate PDF
+    try:
+        pdf_bytes = pdfkit.from_string(
+            output_text,
+            False,
+            options={
+                'encoding': "UTF-8",
+                'enable-local-file-access': None
+            }
+        )
+        logger.info("PDF generated successfully with pdfkit")
+    except Exception as e:
+        logger.error(f"PDF generation error: {str(e)}")
+        raise
+
     headers = {
-        "Content-Disposition": "inline; filename=receipt.pdf", # inline instead of attachment
+        "Content-Disposition": "inline; filename=receipt.pdf",
         "Content-Type": "application/pdf"
     }
 
@@ -122,4 +153,5 @@ async def create_receipt_pdf(request: Request, receipt_data: ReceiptData):
 
 if __name__ == "__main__":
     import uvicorn
+    os.environ["XDG_RUNTIME_DIR"] = "/tmp"
     uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)

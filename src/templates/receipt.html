@@ -10,9 +10,8 @@
         }
         @font-face {
             font-family: 'KannadaFont';
-            src: url('file:///mnt/d/RecietGenerator/fonts/kannada.ttf') format('truetype');
+            src: url('/app/static/fonts/kannada.ttf') format('truetype');
         }
-        
         body {
             font-family: Arial, sans-serif;
             margin: 0;
@@ -20,7 +19,6 @@
             display: flex;
             justify-content: center;
         }
-        
         .receipt {
             width: 200mm;
             min-height: 287mm;
@@ -32,7 +30,6 @@
             flex-direction: column;
             position: relative;
         }
-        
         .header {
             text-align: center;
             margin-bottom: 20px;
@@ -42,119 +39,84 @@
             align-items: center;
             justify-content: center;
         }
-        
-        .logo {
+        .logo, .header-logo-right {
             position: absolute;
-            left: 10px;
             max-width: 60px;
             top: 10px;
             margin-top: 20px;
         }
-        
-        .header-logo-right {
-            position: absolute;
-            right: 10px;
-            max-width: 60px;
-            top: 10px;
-            margin-top: 20px;
-        }
-        
-        .header h1,
-        .header h2,
-        .header h3 {
+        .logo { left: 10px; }
+        .header-logo-right { right: 10px; }
+        .header h1, .header h2, .header h3, .header p {
             margin: 2px 0;
-        }
-        
-        .header p {
-            margin: 1px 0;
             font-size: 0.8em;
         }
-        
         .invoice-details {
             display: flex;
             justify-content: space-between;
             margin-bottom: 15px;
             font-size: 0.9em;
         }
-        
         .customer-details {
             margin-bottom: 20px;
         }
-        
         .customer-name {
             font-size: 1.1em;
             font-weight: bold;
             margin-bottom: 5px;
         }
-        
         .customer-address {
             font-size: 1em;
             margin-bottom: 10px;
         }
-        
         table {
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 20px;
         }
-        
         th, td {
             border: 1px solid red;
             padding: 8px;
             text-align: left;
         }
-        
         th {
             background-color: #f2f2f2;
         }
-        
-        th:nth-child(1),
-        td:nth-child(1) {
+        th:nth-child(1), td:nth-child(1) {
             width: 5%;
             text-align: center;
         }
-        
-        th:nth-child(3),
-        td:nth-child(3),
-        th:nth-child(4),
-        td:nth-child(4),
-        th:nth-child(5),
-        td:nth-child(5) {
+        th:nth-child(3), td:nth-child(3),
+        th:nth-child(4), td:nth-child(4),
+        th:nth-child(5), td:nth-child(5) {
             width: 12%;
             text-align: center;
         }
-        
         td:nth-child(2) {
             width: 50%;
         }
-        
         .emi-info {
             text-align: center;
             padding: 10px;
         }
-        
         .tax-total-row td {
             text-align: right;
             font-weight: bold;
         }
-        
         .tax-total-row td:first-child {
             text-align: left;
         }
-        
         .payment-options {
             display: flex;
             justify-content: flex-start;
             margin-top: 15px;
             margin-bottom: 20px;
         }
-        
         .payment-option {
             display: flex;
             align-items: center;
             margin-right: 30px;
         }
-        
         .payment-checkbox {
             width: 15px;
             height: 15px;
@@ -162,7 +124,6 @@
             margin-right: 5px;
             display: inline-block;
         }
-        
         .bottom-section {
             position: absolute;
             bottom: 20px;
@@ -172,15 +133,13 @@
             border: 1px solid red;
             padding: 10px;
         }
-        
         .terms {
-            font-family: 'KannadaFont', sans-serif;
+            font-family: 'KannadaFont', sans-serif !important;
             width: 65%;
             font-size: 0.7em;
             padding-right: 15px;
-            height: 170px
+            height: 170px;
         }
-        
         .signature {
             width: 35%;
             border-left: 1px solid red;
@@ -189,42 +148,24 @@
             display: flex;
             flex-direction: column;
         }
-        
         .signature-text {
             text-align: center;
-            margin-top: 160px;
-        }
-        
-        .header-title-container {
-            display: flex;
-            justify-content: center;
-            width: 100%;
-            position: relative;
-        }
-        
-        .tax-invoice-title {
-            position: absolute;
-            top: 0;
-            font-size: x-small;
-            font-weight: bold;
-            text-decoration: underline;
+            margin-top: auto;
         }
     </style>
 </head>
 
 <body>
     <div class="receipt">
-        <!-- Header Section -->
         <div class="header">
-            <img src="file:///mnt/d/RecietGenerator/static/logos/Kshipra_proper_logo.png" alt="Kshipra Logo" class="logo">
-            <img src="file:///mnt/d/RecietGenerator/static/logos/ganesha_right.jpg" alt="Kshipra Right Logo" class="header-logo-right">
+            <img src="{{ kshipra_logo_uri }}" alt="Kshipra Logo" class="logo">
+            <img src="{{ ganesha_logo_uri }}" alt="Right Logo" class="header-logo-right">
 
             <div style="display: flex; justify-content: space-between; width: 100%;">
                 <p style="font-size: x-small;">GSTIN: 29BDCPJ9687C1Z6</p>
-                <p style="font-size: x-small;margin-left: auto;"><b><u>TAX INVOICE</u></b></p>
+                <p style="font-size: x-small; margin-left: auto;"><b><u>TAX INVOICE</u></b></p>
                 <p style="font-size: x-small; margin-left: auto;">Mob: 8748835725</p>
             </div>
-            
 
             <h2 style="font-family: 'KannadaFont', sans-serif;">ಕ್ಷಿಪ್ರ ಮೊಬೈಲ್ಸ್</h2>
             <p style="font-family: 'KannadaFont', sans-serif;">ಎಂಟರ್ ಪ್ರೈಸಸ್</p>
@@ -233,23 +174,16 @@
             <p>K.H.Road, Ballupet - 573 214, Sakaleshpur Tq, Hassan Dist.</p>
         </div>
 
-        <!-- Invoice Details -->
         <div class="invoice-details">
-            <div>
-                <strong>Invoice No: </strong> {{ receipt_no }}
-            </div>
-            <div>
-                <strong>Date: </strong> {{ date }}
-            </div>
+            <div><strong>Invoice No: </strong> {{ receipt_no }}</div>
+            <div><strong>Date: </strong> {{ date }}</div>
         </div>
 
-        <!-- Customer Details -->
         <div class="customer-details">
             <div class="customer-name">M/s: {{ customer_name }}</div>
             <div class="customer-address">{{ customer_address }}</div>
         </div>
 
-        <!-- Items Table -->
         <table>
             <thead>
                 <tr>
@@ -264,7 +198,8 @@
                 {% for item in items %}
                 <tr>
                     <td>{{ loop.index }}</td>
-                    <td>{{ item.item_name }}
+                    <td>
+                        {{ item.item_name }}
                         {% if item.imei1 %}<br>IMEI 1: {{ item.imei1 }}{% endif %}
                         {% if item.imei2 %}<br>IMEI 2: {{ item.imei2 }}{% endif %}
                     </td>
@@ -273,8 +208,7 @@
                     <td>{{ item.amount }}</td>
                 </tr>
                 {% endfor %}
-                
-                <!-- EMI Info if applicable -->
+
                 {% if payment_type == "emi" %}
                 <tr>
                     <td colspan="5" class="emi-info">
@@ -283,8 +217,7 @@
                     </td>
                 </tr>
                 {% endif %}
-                
-                <!-- Tax and Total -->
+
                 <tr class="tax-total-row">
                     <td colspan="3"></td>
                     <td>CGST: {{ cgst_percent }}%</td>
@@ -303,7 +236,6 @@
             </tbody>
         </table>
 
-        <!-- Payment Options -->
         <div class="payment-options">
             <div class="payment-option">
                 <div class="payment-checkbox" style="{% if payment_type == 'cash' %}background-color: #000;{% endif %}"></div>
@@ -319,7 +251,6 @@
             </div>
         </div>
 
-        <!-- Terms and Signature -->
         <div class="bottom-section">
             <div class="terms">
                 <p><b>ನಿಬಂಧನೆಗಳು:</b></p>
@@ -331,7 +262,12 @@
                 <p>೬. ನೀರಿನಲ್ಲಿ ಹಾಕಿದ್ದು ಮತ್ತು ಕೆಳಗೆ ಬಿದ್ದಿದ್ದಕ್ಕೆ ಅಂಗಡಿ ಮಾಲೀಕರು ಮತ್ತು ಕಂಪನಿಯ ಗ್ಯಾರಂಟಿ ಇರುವುದಿಲ್ಲ.</p>
             </div>
             <div class="signature">
-                <div class="signature-text">Signature</div>
+                <div class="signature-text">
+                    <p>For</p>
+                    <p><strong>Kshipra Mobiles</strong></p>
+                    <br><br>
+                    <p>Authorized Signatory</p>
+                </div>
             </div>
         </div>
     </div>
